@@ -2,6 +2,7 @@
 
 import type React from "react"
 import { useState } from "react"
+import { supabase, type ContactSubmission } from "@/lib/supabase"
 
 function SuccessModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
   if (!isOpen) return null
@@ -40,6 +41,39 @@ function SuccessModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => voi
   )
 }
 
+function ErrorModal({ isOpen, onClose, message }: { isOpen: boolean; onClose: () => void; message: string }) {
+  if (!isOpen) return null
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden rounded-2xl">
+          <div className="absolute -top-4 -right-4 w-24 h-24 bg-red-100 rounded-full opacity-50"></div>
+          <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-red-50 rounded-full opacity-30"></div>
+        </div>
+
+        <div className="relative z-10 text-center">
+          <div className="mx-auto w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-6">
+            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+
+          <h3 className="text-2xl font-bold text-gray-900 mb-4">Submission Failed</h3>
+          <p className="text-gray-600 mb-8 leading-relaxed">{message}</p>
+
+          <button
+            onClick={onClose}
+            className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -52,6 +86,8 @@ export default function ContactForm() {
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const [showErrorModal, setShowErrorModal] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData((prev) => ({
@@ -64,27 +100,51 @@ export default function ContactForm() {
     e.preventDefault()
     setIsSubmitting(true)
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    try {
+      // Prepare data for Supabase (excluding company and service fields that aren't in the database)
+      const submissionData: Omit<ContactSubmission, "id" | "created_at"> = {
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: `${formData.message}${formData.company ? `\n\nCompany: ${formData.company}` : ""}${formData.service ? `\nService Interest: ${formData.service}` : ""}`,
+      }
 
-    console.log("[v0] Form submitted:", formData)
-    setShowSuccessModal(true)
+      // Submit to Supabase
+      const { data, error } = await supabase.from("contact_submissions").insert([submissionData]).select()
 
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      company: "",
-      subject: "",
-      message: "",
-      service: "",
-    })
+      if (error) {
+        console.log(error)
+        throw error
+      }
 
-    setIsSubmitting(false)
+      console.log("[v0] Form submitted successfully to database:", data)
+      setShowSuccessModal(true)
+
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        subject: "",
+        message: "",
+        service: "",
+      })
+    } catch (error) {
+      console.error("[v0] Error submitting form:", error)
+      setErrorMessage("There was an error submitting your message. Please try again or contact us directly.")
+      setShowErrorModal(true)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleCloseModal = () => {
     setShowSuccessModal(false)
+  }
+
+  const handleCloseErrorModal = () => {
+    setShowErrorModal(false)
+    setErrorMessage("")
   }
 
   return (
@@ -236,6 +296,7 @@ export default function ContactForm() {
       </div>
 
       <SuccessModal isOpen={showSuccessModal} onClose={handleCloseModal} />
+      <ErrorModal isOpen={showErrorModal} onClose={handleCloseErrorModal} message={errorMessage} />
     </>
   )
 }
