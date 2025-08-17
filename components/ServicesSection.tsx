@@ -6,9 +6,17 @@ export default function ServicesSection() {
     <section id="services" className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
-          <Badge variant="outline" className="text-primary border-primary mb-4">
+          <div className="flex justify-center mb-8">
+            <div className="inline-flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium">
+              <span>Services</span>
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+          {/* <Badge variant="outline" className="text-primary border-primary mb-4">
             Services
-          </Badge>
+          </Badge> */}
           <h2 className="text-4xl lg:text-5xl font-bold mb-4">Our Core Technology Solutions</h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
             Comprehensive technology solutions designed to accelerate your digital transformation journey
