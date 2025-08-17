@@ -13,6 +13,7 @@
   <link href="images/favicon-growtech.svg" rel="shortcut icon" type="image/x-icon">
   <link href="css/styles.bundle.css" rel="stylesheet">
   <link href="css/home-v1.css" rel="stylesheet">
+    <link href="css/about-v2.css" rel="stylesheet">
 </head>
 
 <body>
@@ -49,8 +50,21 @@
       </div>
     </div>
     <div class="home__ilustration container" data-animation="fade-in">
-      <img src="images/home-v1-dashboard.png" alt="" data-rjs="assets/media/images/illustration/home-v1-dashboard@2x.png">
+      <!-- <img src="images/home-v1-dashboard.png" alt="" data-rjs="assets/media/images/illustration/home-v1-dashboard@2x.png"> -->
+       
     </div>
+    <div class="about-team-video-container about-team-video-container--v2" data-animation="fade-in">
+        <video poster="assets/media/images/illustration/about-v1-video-cover.png" class="about-team-video" id="about-v2-video"
+          muted>
+          <source src="media/Multiethnic%20Business%20Team%20Drinking%20Coffee%20And%20Talking%20In%20The%20Office.mp4">
+          <source src="assets/media/videos/Multiethnic Business Team Drinking Coffee And Talking In The Office.webm">
+          <source src="Multiethnic%20Business%20Team%20Drinking%20Coffee%20And%20Talking%20In%20The%20Office.mkv">
+          Your browser does not support the video tag.
+        </video>
+        <div id="player-v2" class="about-team-video-play-wrap js-player">
+          <div class="about-team-video-play-player"></div>
+        </div>
+      </div>
   </section>
 
   <!-- Logo Section -->
@@ -286,7 +300,6 @@
     <div class="footer__container container">
       <div class="footer__sosmed">
         <h3 class="footer__sosmed__title" style="text-transform: lowercase;">nuvexa</h3>
-        <p class="footer__sosmed__detail text-m-regular">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Diam ut id nisl tellus rhoncus, imperdiet</p>
         <div class="footer__sosmed__flex">
           <button class="btn btn-box">
             <img src="images/globe.svg" alt="Logo" class="btn-box__box-icon">
@@ -351,6 +364,7 @@
   <script src="js/ScrollTrigger.min.js"></script>
   <script src="js/retina.js"></script>
   <script src="js/home-v1.js"></script>
+  <script src="js/about-v2.js"></script>
 </body>
 
 </html>
