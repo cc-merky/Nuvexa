@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button"
 import { Play } from "lucide-react"
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 export default function HeroSection() {
+  const router = useRouter();
   return (
     <section className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100 relative overflow-hidden">
       <div className="absolute inset-0 opacity-30">
@@ -14,7 +17,7 @@ export default function HeroSection() {
         {/* Version Badge */}
         <div className="flex justify-center mb-8">
           <div className="inline-flex items-center gap-2 bg-purple-600 text-white px-4 py-2 rounded-full text-sm font-medium">
-            <span>Nuvexa is out now!</span>
+            <span>Nuvexa platform is live!</span>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -24,9 +27,11 @@ export default function HeroSection() {
         {/* Main Heading */}
         <div className="text-center max-w-4xl mx-auto mb-8">
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight mb-6">
-            Innovative Tech for a Better {" "}
+            Innovative Technology <span className=" inline bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+              For a
+            </span> {" "} 
             <span className="bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
-              Future
+              Better Future
             </span>
             <br />
           </h1>
@@ -42,18 +47,37 @@ export default function HeroSection() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
           <Button
             size="lg"
-            className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 text-lg font-semibold rounded-full"
+            className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 text-lg font-semibold rounded-full cursor-pointer"
+            onClick={() => router.push("/contact")}
           >
             Get Started
           </Button>
           <Button
             variant="outline"
             size="lg"
-            className="border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-3 text-lg font-semibold rounded-full bg-transparent"
+            className="border-gray-300 text-gray-700 px-8 py-3 text-lg font-semibold rounded-full bg-transparent cursor-pointer"
+            onClick={() => router.push("/#solutions")}
           >
             <Play className="w-5 h-5 mr-2" />
             View Our Work
           </Button>
+        </div>
+
+        {/* Dashboard Preview */}
+        <div className="flex justify-center">
+          <div className="relative max-w-5xl w-full">
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-indigo-600/20 rounded-3xl blur-3xl transform scale-105"></div>
+            <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-200">
+              <Image
+                  src="/images/hero-2.jpg"
+                  alt="Nuvexa team collaborating"
+                  className="w-full h-96 object-cover"
+                  width={1200}
+                  height={800}
+                  priority
+                />
+            </div>
+          </div>
         </div>
       </div>
     </section>
