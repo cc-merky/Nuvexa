@@ -1,0 +1,1 @@
+$(".js-items__inputs-area--textarea").on("input",(function(){let t=$(this).attr("maxlength"),s=$(this).val().length;$(".js-items__inputs-area--span").find("#current").text(s),s>=t?$(".js-items__inputs-area--span").css({color:"#e95c49"}):$(".js-items__inputs-area--span").css({color:"#cdd0d8"})}));
