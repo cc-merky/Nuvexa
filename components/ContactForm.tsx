@@ -101,7 +101,7 @@ export default function ContactForm() {
     setIsSubmitting(true)
 
     try {
-      // Prepare data for Supabase (excluding company and service fields that aren't in the database)
+      
       const submissionData: Omit<ContactSubmission, "id" | "created_at"> = {
         name: formData.name,
         email: formData.email,
@@ -109,7 +109,7 @@ export default function ContactForm() {
         message: `${formData.message}${formData.company ? `\n\nCompany: ${formData.company}` : ""}${formData.service ? `\nService Interest: ${formData.service}` : ""}`,
       }
 
-      // Submit to Supabase
+
       const { data, error } = await supabase.from("contact_submissions").insert([submissionData]).select()
 
       if (error) {
